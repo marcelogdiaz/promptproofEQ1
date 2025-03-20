@@ -1,0 +1,186 @@
+{
+  "package": {
+    "promptflow.tools.azure_content_safety.analyze_text": {
+      "name": "Content Safety (Text Analyze)",
+      "type": "python",
+      "inputs": {
+        "connection": {
+          "type": [
+            "AzureContentSafetyConnection"
+          ],
+          "allow_manual_entry": false,
+          "is_multi_select": false,
+          "input_type": "default",
+          "value": "icontentsafetyHB",
+          "id": "cj01ps8p"
+        },
+        "hate_category": {
+          "type": [
+            "string"
+          ],
+          "default": "medium_sensitivity",
+          "enum": [
+            "disable",
+            "low_sensitivity",
+            "medium_sensitivity",
+            "high_sensitivity"
+          ],
+          "allow_manual_entry": false,
+          "is_multi_select": false,
+          "input_type": "default",
+          "value": "high_sensitivity",
+          "id": "lslrtz6b"
+        },
+        "self_harm_category": {
+          "type": [
+            "string"
+          ],
+          "default": "medium_sensitivity",
+          "enum": [
+            "disable",
+            "low_sensitivity",
+            "medium_sensitivity",
+            "high_sensitivity"
+          ],
+          "allow_manual_entry": false,
+          "is_multi_select": false,
+          "input_type": "default",
+          "value": "high_sensitivity",
+          "id": "rdm047m9"
+        },
+        "sexual_category": {
+          "type": [
+            "string"
+          ],
+          "default": "medium_sensitivity",
+          "enum": [
+            "disable",
+            "low_sensitivity",
+            "medium_sensitivity",
+            "high_sensitivity"
+          ],
+          "allow_manual_entry": false,
+          "is_multi_select": false,
+          "input_type": "default",
+          "value": "high_sensitivity",
+          "id": "hx4qflqh"
+        },
+        "text": {
+          "type": [
+            "string"
+          ],
+          "allow_manual_entry": false,
+          "is_multi_select": false,
+          "input_type": "default",
+          "value": "${inputs.inPrompt}",
+          "id": "y931wq7d"
+        },
+        "violence_category": {
+          "type": [
+            "string"
+          ],
+          "default": "medium_sensitivity",
+          "enum": [
+            "disable",
+            "low_sensitivity",
+            "medium_sensitivity",
+            "high_sensitivity"
+          ],
+          "allow_manual_entry": false,
+          "is_multi_select": false,
+          "input_type": "default",
+          "value": "high_sensitivity",
+          "id": "0fiqiamm"
+        }
+      },
+      "description": "Use Azure Content Safety to detect harmful content.",
+      "module": "promptflow.tools.azure_content_safety",
+      "function": "analyze_text",
+      "is_builtin": true,
+      "package": "promptflow-tools",
+      "package_version": "1.6.0",
+      "enable_kwargs": false,
+      "deprecated_tools": [
+        "content_safety_text.tools.content_safety_text_tool.analyze_text"
+      ],
+      "tool_state": "stable",
+      "toolId": "promptflow.tools.azure_content_safety.analyze_text"
+    }
+  },
+  "code": {
+    "checkoutModerate.py": {
+      "name": "checkoutModerate.py",
+      "type": "python",
+      "inputs": {
+        "inPrompt": {
+          "type": [
+            "string"
+          ],
+          "allow_manual_entry": false,
+          "is_multi_select": false,
+          "input_type": "default",
+          "value": "${inputs.inPrompt}",
+          "id": "61jz801m"
+        },
+        "outModerate": {
+          "type": [
+            "string"
+          ],
+          "allow_manual_entry": false,
+          "is_multi_select": false,
+          "input_type": "default",
+          "value": "${moderateTextNode.output}",
+          "id": "wx5flomc"
+        }
+      },
+      "source": "checkoutModerate.py",
+      "function": "my_python_tool",
+      "is_builtin": false,
+      "enable_kwargs": false,
+      "tool_state": "stable",
+      "toolId": "checkoutModerate.py"
+    },
+    "LLMHate.jinja2": {
+      "name": "LLMHate.jinja2",
+      "type": "prompt",
+      "inputs": {
+        "outModerateHate": {
+          "type": [
+            "string"
+          ],
+          "allow_manual_entry": false,
+          "is_multi_select": false,
+          "input_type": "default",
+          "value": "${contentSafetyCheck.output}",
+          "id": "21trsjqi"
+        }
+      },
+      "source": "LLMHate.jinja2",
+      "is_builtin": false,
+      "enable_kwargs": false,
+      "tool_state": "stable",
+      "toolId": "LLMHate.jinja2"
+    },
+    "LLMSensitive.jinja2": {
+      "name": "LLMSensitive.jinja2",
+      "type": "prompt",
+      "inputs": {
+        "sentitivePrompt": {
+          "type": [
+            "string"
+          ],
+          "allow_manual_entry": false,
+          "is_multi_select": false,
+          "input_type": "default",
+          "value": "${moderationNode.output}",
+          "id": "we97xnsc"
+        }
+      },
+      "source": "LLMSensitive.jinja2",
+      "is_builtin": false,
+      "enable_kwargs": false,
+      "tool_state": "stable",
+      "toolId": "LLMSensitive.jinja2"
+    }
+  }
+}

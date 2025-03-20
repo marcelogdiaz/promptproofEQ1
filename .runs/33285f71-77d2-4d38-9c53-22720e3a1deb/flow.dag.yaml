@@ -1,0 +1,74 @@
+id: template_standard_flow
+name: Template Standard Flow
+inputs:
+  originalPrompt:
+    type: string
+    description: Prompt de entrada, se asume que NO TIENE errores gramaticales,
+      consultas incompletas o entradas poco claras
+    is_chat_input: false
+outputs:
+  enhancePrompt:
+    type: string
+    reference: ${PIINode.output}
+nodes:
+- name: contentSafetyNode
+  type: python
+  source:
+    type: package
+    tool: promptflow.tools.azure_content_safety.analyze_text
+  inputs:
+    connection: icontentsafetyHB
+    hate_category: high_sensitivity
+    self_harm_category: high_sensitivity
+    sexual_category: high_sensitivity
+    text: ${inputs.originalPrompt}
+    violence_category: high_sensitivity
+  use_variants: false
+- name: contentSafetyCheck
+  type: python
+  source:
+    type: code
+    path: checkoutModerate.py
+  inputs:
+    inPrompt: ${inputs.originalPrompt}
+    outModerate: ${contentSafetyNode.output}
+  use_variants: false
+- name: moderationNode
+  type: llm
+  source:
+    type: code
+    path: LLMHate.jinja2
+  inputs:
+    deployment_name: gpt-4o
+    temperature: 1
+    top_p: 1
+    max_tokens: 300
+    response_format:
+      type: text
+    outModerateHate: ${contentSafetyCheck.output}
+  provider: AzureOpenAI
+  connection: ai-marcelogdiaz0812ai659200673871_aoai
+  api: chat
+  module: promptflow.tools.aoai
+  use_variants: false
+- name: PIINode
+  type: llm
+  source:
+    type: code
+    path: LLMSensitive.jinja2
+  inputs:
+    deployment_name: gpt-4o
+    temperature: 1
+    top_p: 1
+    max_tokens: 300
+    response_format:
+      type: text
+    sentitivePrompt: ${moderationNode.output}
+  provider: AzureOpenAI
+  connection: ai-marcelogdiaz0812ai659200673871_aoai
+  api: chat
+  module: promptflow.tools.aoai
+  use_variants: false
+node_variants: {}
+environment:
+  python_requirements_txt: requirements.txt

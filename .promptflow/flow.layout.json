@@ -1,0 +1,49 @@
+{
+  "orientation": "Vertical",
+  "nodeLayouts": {
+    "inputs": {
+      "x": 12,
+      "y": 62,
+      "index": -1
+    },
+    "outputs": {
+      "x": 12,
+      "y": 612,
+      "index": -1
+    },
+    "contentSafetyNode": {
+      "x": 186.16658528645831,
+      "y": 170.66658528645834,
+      "height": 75,
+      "index": 0
+    },
+    "contentSafetyCheck": {
+      "x": 12,
+      "y": 282,
+      "height": 75,
+      "index": 1
+    },
+    "moderationNode": {
+      "x": 12,
+      "y": 392,
+      "height": 75,
+      "index": 2
+    },
+    "PIINode": {
+      "x": 12,
+      "y": 502,
+      "height": 75,
+      "index": 3
+    }
+  },
+  "viewport": {
+    "transformMatrix": [
+      0.6000000000000001,
+      0,
+      0,
+      0.6000000000000001,
+      262.82343749999995,
+      -81.20000000000005
+    ]
+  }
+}
